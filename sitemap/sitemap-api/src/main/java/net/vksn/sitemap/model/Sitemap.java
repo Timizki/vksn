@@ -2,6 +2,8 @@ package net.vksn.sitemap.model;
 
 import java.util.Set;
 
+import javax.persistence.Entity;
+
 @Entity
 public class Sitemap extends net.vksn.bedrock.model.Entity {
 	private Set<SitemapItem> sitemapItems;

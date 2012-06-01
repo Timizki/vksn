@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>sitemap</groupId>
+        <groupId>net.vksn.sitemap</groupId>
         <artifactId>sitemap</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
@@ -13,14 +13,14 @@
     
     <artifactId>sitemap-web</artifactId>
     <packaging>jar</packaging>
-    <name>sitemap</name>
+    <name>Sitemap - Web UI</name>
 
   
     <dependencies>
         <dependency>
-            <groupId>${pom.parent.groupId}</groupId>
-            <artifactId>sitemap-core</artifactId>
-            <version>${pom.parent.version}</version>
+            <groupId>net.vksn.sitemap</groupId>
+            <artifactId>core</artifactId>
+            <version>${project.parent.version}</version>                       
         </dependency>
     </dependencies>
 </project>

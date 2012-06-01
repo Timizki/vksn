@@ -24,5 +24,4 @@ public class SitemapItemProperty extends Property {
 		}
 		super.setId(null);
 	}
-ge
 }
