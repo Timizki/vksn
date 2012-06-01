@@ -12,12 +12,4 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
-  <dependencies>
-  	<dependency>
-  		<groupId>net.vksn.bedrock</groupId>
-  		<artifactId>bedrock</artifactId>
-  		<version>0.2.0-SNAPSHOT</version>
-  	</dependency>
-  </dependencies>
 </project>

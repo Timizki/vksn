@@ -23,9 +23,17 @@
 	<modules>
 		<module>sitemap-api</module>
 		<module>sitemap-core</module>
-		<module>sitemap-web</module>		
+		<module>sitemap-web</module>
 	</modules>
 
+	<dependencies>
+		<dependency>
+			<groupId>net.vksn.bedrock</groupId>
+			<artifactId>bedrock</artifactId>
+			<version>0.2.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	
 	<properties>
 		<!-- Application settings -->
 		<copyright.year>2012</copyright.year>
