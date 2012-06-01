@@ -1,0 +1,90 @@
+package net.vksn.bedrock.dao.hibernate;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.EntityNotFoundException;
+
+import net.vksn.bedrock.exceptions.MethodNotSupportedException;
+import net.vksn.bedrock.model.Entity;
+import net.vksn.bedrock.query.Query;
+
+import org.hibernate.Criteria;
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
+public class AbstractHibernateDAO<T extends Entity> extends HibernateDaoSupport {
+	
+	private Class<T> clazz;
+	
+	@SuppressWarnings("unchecked")
+	public AbstractHibernateDAO(Class<T> entityClass){
+		this.clazz = entityClass;
+	}
+
+	@SuppressWarnings("unchecked")
+	T get(int id) throws EntityNotFoundException {	
+		Criteria criteria = createCriteria();
+		criteria.add(Restrictions.idEq(id));
+		if(criteria.list().size() > 1)  {
+			throw new NonUniqueObjectException("1L", clazz.toString());
+		}
+		if(criteria.list().isEmpty()) {
+			throw new EntityNotFoundException("No "+clazz.getName()+" found with id: "+ id);
+		}
+		return (T) criteria.list().iterator().next();
+	}
+	
+	public Collection<T> getByQuery(Query query) {
+		throw new RuntimeException(new MethodNotSupportedException());
+	}
+	
+	void store(T entity) throws EntityNotFoundException {
+		getHibernateTemplate().saveOrUpdate(entity);
+	}
+	
+	void remove(int id) throws EntityNotFoundException {
+		T entity = get(id);
+		getHibernateTemplate().delete(entity);
+	}
+	
+	void delete(int id) throws EntityNotFoundException {
+		T entity = get(id);
+		entity.setDeleted(new Date());
+		store(entity);
+	}
+	
+	void undelete(int id) throws EntityNotFoundException {
+		T entity = get(id);
+		entity.setDeleted(null);
+		store(entity);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Criteria createCriteria() {
+		Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+		return session.createCriteria(clazz);
+	}
+
+	protected  void populateCriteria(Criteria criteria, Query query) {
+		if(query.getId() != null) {
+			criteria.add(Restrictions.idEq(query.getId()));
+		}
+		if(query.getDeletedAfter() != null) {
+			criteria.add(Restrictions.gt("deleted", query.getDeletedAfter()));
+		}
+		if(query.getDeletedBefore() != null) {
+			criteria.add(Restrictions.lt("deleted", query.getCreateBefore()));
+		}
+		
+		if(query.getCreatedAfter() != null) {
+			criteria.add(Restrictions.gt("created", query.getCreatedAfter()));
+		}
+		
+		if(query.getCreateBefore() != null) {
+			criteria.add(Restrictions.lt("created", query.getCreateBefore()));
+		}
+	}
+}

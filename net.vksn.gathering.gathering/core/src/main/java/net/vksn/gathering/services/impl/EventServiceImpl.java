@@ -1,0 +1,46 @@
+package net.vksn.gathering.services.impl;
+
+import java.util.Collection;
+
+import net.vksn.bedrock.exceptions.EntityNotFoundException;
+import net.vksn.bedrock.query.Query;
+import net.vksn.gathering.dao.EventDAO;
+import net.vksn.gathering.dao.InstanceDAO;
+import net.vksn.gathering.model.Event;
+import net.vksn.gathering.model.Instance;
+import net.vksn.gathering.services.EventService;
+import net.vksn.gathering.services.ParticipantService;
+
+import org.springframework.transaction.annotation.Transactional;
+
+public class EventServiceImpl implements EventService {
+	private EventDAO eventDAO;
+	private InstanceDAO instanceDAO;
+	private ParticipantService participantService;
+	
+	public void setEventDAO(EventDAO eventDAO) {
+		this.eventDAO = eventDAO;
+	}
+
+	public void setInstanceDAO(InstanceDAO instanceDAO) {
+		this.instanceDAO = instanceDAO;
+	}
+	
+	@Transactional(readOnly = true)
+	public Event get(int id) throws EntityNotFoundException {
+		return eventDAO.get(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Collection<Event> getByQuery(Query query) {
+		return eventDAO.getByQuery(query);
+	}
+	
+	@Transactional
+	public void store(Event event) throws EntityNotFoundException {
+		for(Instance instance : event.getInstances()) {
+			instanceDAO.store(instance);
+		}
+		eventDAO.store(event);
+	}
+}

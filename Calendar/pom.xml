@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Calendar</groupId>
+  <artifactId>Calendar</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0.0-SNAPSHOT</version>
+  <name>Calendar</name>
+  <url>http://ethryl.scrapper-site.net</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+<pluginRepository>
+  <id>codehaus-plugins</id>
+  <url>http://dist.codehaus.org/</url>
+  <layout>legacy</layout>
+  <snapshots>
+    <enabled>true</enabled>
+  </snapshots>
+  <releases>
+    <enabled>true</enabled>
+  </releases>
+</pluginRepository>
+  <build>
+    <finalName>Calendar</finalName>
+    <plugins>
+    	<plugin>
+    		<groupId>org.apache.maven.plugins</groupId>
+    		<artifactId>maven-compiler-plugin</artifactId>
+    		<configuration>
+    			<source>1.5</source>
+    			<target>1.5</target>
+    			<excludes>
+    				<exclude>**/*Point*.java</exclude>
+    			</excludes>
+    		</configuration>
+    	</plugin>
+    </plugins>
+  </build>
+  <modules>
+    <module>core</module>
+    <module>web</module>
+  </modules>
+</project>

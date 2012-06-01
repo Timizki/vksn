@@ -1,0 +1,21 @@
+
+
+import java.io.File;
+
+import javax.swing.JFrame;
+
+import org.apache.maven.cli.CLIManager;
+import org.apache.maven.cli.MavenCli;
+
+
+
+public class Installer extends JFrame {
+
+	public static void main(String[] args) {
+		File workingDir = new File("/");
+		MavenCli cli = new MavenCli();
+		CLIManager manager = new CLIManager();
+		cli.doMain(new String[]{"autosetup:remote"}, workingDir.getAbsolutePath(), System.out, System.err);
+
+	}
+}

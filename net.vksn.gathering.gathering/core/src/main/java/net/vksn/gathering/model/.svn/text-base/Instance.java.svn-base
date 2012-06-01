@@ -1,0 +1,42 @@
+package net.vksn.gathering.model;
+
+import java.util.Collection;
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
+
+import net.vksn.bedrock.model.Entity;
+
+@SuppressWarnings("serial")
+@javax.persistence.Entity(name="instancies")
+public class Instance extends Entity {
+	private Date date;
+	private boolean cancelled;
+	private Collection<Participant> participants;
+	
+	@Column
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public boolean isCancelled() {
+		return cancelled;
+	}
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
+	}
+	@OneToMany(cascade = {CascadeType.ALL})
+	@JoinTable(name = "instance_participants")
+	public Collection<Participant> getParticipants() {
+		return participants;
+	}
+	public void setParticipants(Collection<Participant> participants) {
+		this.participants = participants;
+	}
+}

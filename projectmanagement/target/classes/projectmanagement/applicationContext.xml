@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+
+	<!--  Hibernaten käyttöönotto -->
+	<bean id="parentSessionFactory" abstract="true" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<!-- Määritellään annotaatioilla tietokantatauluksi mapatyt luokat -->
+		<property name="annotatedClasses">
+			<list>
+				<value>projectmanagement.model.Person</value>
+				<value>projectmanagement.model.Role</value>
+				<value>projectmanagement.model.Task</value>
+				<value>projectmanagement.model.Project</value>
+			</list>
+		</property>
+	</bean>	
+        <!-- määritellään transaktion sisällä suoritettavat  metodit/luokat -->
+	<aop:config>
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* projectmanagement.dao.hibernate.*.*(..))"/>
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
+			<tx:method name="*"/>
+		</tx:attributes>
+	</tx:advice>	
+	
+	<!-- DAO beanien määrittely -->
+	<bean id="personDao" class="projectmanagement.dao.hibernate.PersonDaoHibernate" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="roleDao" class="projectmanagement.dao.hibernate.RoleDaoHibernate" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="projectDao" class="projectmanagement.dao.hibernate.ProjectDaoHibernate" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="taskDao" class="projectmanagement.dao.hibernate.TaskDaoHibernate" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- service beanien määrittely -->
+	<bean id="userService" class="projectmanagement.services.impl.UserServiceImpl" >
+		<property name="personDao" ref="personDao" />
+		<property name="roleDao" ref="roleDao" />	
+	</bean>
+	
+	<bean id="projectService" class="projectmanagement.services.impl.ProjectServiceImpl" >
+		<property name="projectDao" ref="projectDao" />
+		<property name="taskDao" ref="taskDao" />
+	</bean>	
+</beans>

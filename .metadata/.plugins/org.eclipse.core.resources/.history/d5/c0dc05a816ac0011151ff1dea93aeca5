@@ -1,0 +1,11 @@
+package net.vksn.bedrock.dao.util;
+
+public class PopulationException extends RuntimeException {
+	public PopulationException() {
+		super("Could not populate criteria");
+	}
+	
+	public PopulationException(String message) {
+		super(message);
+	}
+}

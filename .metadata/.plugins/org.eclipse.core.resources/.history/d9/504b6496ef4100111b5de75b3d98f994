@@ -1,0 +1,19 @@
+
+
+import java.io.File;
+
+import javax.swing.JFrame;
+
+import org.apache.maven.cli.MavenCli;
+
+
+
+public class Installer extends JFrame {
+
+	public static void main(String[] args) {
+		File workingDir = new File("/");
+		MavenCli cli = new MavenCli();
+		cli.doMain(new String[]{"auto-setup:remote"}, workingDir.getAbsolutePath(), System.out, System.err);
+
+	}
+}

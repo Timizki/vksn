@@ -1,0 +1,98 @@
+html {
+	height: 100%;	
+}
+
+body {
+	background:transparent url('/images/pgTile.png');
+	font-family: "Lucida Console", "Times New Roman",Georgia,Serif;
+	margin:0 0;
+	padding:0px;
+	text-align:center;
+	font-size: 14px;
+	height:100%;
+}
+
+table {
+	width: 100%;	
+}
+
+h1{
+	font-size: 110%;	
+}
+
+h2{
+	font-size: 105%;	
+}
+
+h3 {
+	font-size: 100%;
+	font-weight: bold;	
+}
+
+#container {
+	min-height:100%;
+	width:900px;
+	margin:0px auto;
+	text-align:left;
+	padding:0px;
+	background-color:#eee;
+	background: #e7ffe5 url('/images/contentBg.png') repeat-y;
+}
+#container #content {
+	margin-left: 20px;
+	margin-right: 20px;
+}
+#header {
+	height:80px;
+	background-image: url("/images/header.png");
+	background-repeat: no-repeat;
+	background-position: top left;
+	background-color: transparent;
+}
+
+#navigation {
+	height:20px;
+	background-color: #000;
+	font-family:Monaco;
+	font-size: 13px;
+}
+
+#navigation ul {
+	margin:0;
+	padding-top:2px;
+} 
+
+#navigation ul li {
+	display:inline;
+	margin-right: 20px;
+}
+
+#navigation ul li a {
+	color:white;
+	text-decoration: none;
+}
+
+#login {
+	text-align: center;
+	margin-top: 50px;
+}
+
+a {
+	text-decoration: none;
+}
+
+table#events  {
+	border-collapse: collapse;
+}
+
+table.participants tr td.name, table#event th {
+	width: 250px;	
+}
+
+table#events tbody tr:hover {
+	background-color:#afd271; 
+}
+
+td.description {
+	width: 350px;
+}

@@ -1,0 +1,22 @@
+package net.vksn.bedrock.dao.util;
+
+public class PopulationException extends RuntimeException {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Class modelClass;
+	
+	public PopulationException() {
+		super("Could not populate criteria");
+	}
+	
+	@Deprecated
+	public PopulationException(String message) {
+		super(message);
+	}
+	
+	public PopulationException(Class modelClass, String message) {
+		super(message);
+	}
+}

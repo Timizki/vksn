@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+	
+	<!-- Validaattorit formeille -->
+	<bean name="projectValidator" class="projectmanagement.validators.ProjectValidator" />
+	<bean name="taskValidator" class="projectmanagement.validators.TaskValidator" />
+	<bean name="personValidator" class="projectmanagement.validators.PersonValidator" />
+
+
+	<!-- Editori jolla muutetaan String päivämäärä Dateksi -->
+	<bean id="customDateEditor"
+		class="org.springframework.beans.propertyeditors.CustomDateEditor">
+		<constructor-arg>
+			<bean class="java.text.SimpleDateFormat">
+				<constructor-arg>
+					<value>dd.MM.yyyy</value>
+				</constructor-arg>
+			</bean>
+		</constructor-arg>
+		<constructor-arg>
+			<value>true</value>
+		</constructor-arg>
+	</bean>
+
+	<!--  Controlleri jota käytetään projektien listauksessa -->
+	<bean name="listProjectsController" class="projectmanagement.controllers.ViewController">
+		<property name="service" ref="projectService" />
+		<property name="viewName" value="listProjects" />
+	</bean>	
+	
+	<!-- Controlleri jota käytetään virheelisten sivupyyntöjen käsittelyssä -->
+	<bean name="errorController" class="projectmanagement.controllers.ViewController">
+		<property name="viewName" value="error" />
+	</bean>
+	
+	<!--  Controlleri jota käytetään yhden projektin näyttämiseen -->
+	<bean name="showProjectController" class="projectmanagement.controllers.ViewController">
+		<property name="service" ref="projectService" />
+		<property name="viewName" value="showProject" />
+	</bean>
+
+	<!--  Controlleri jota käytetään projektin poistamiseen -->
+	<bean name="deleteProjectController" class="projectmanagement.controllers.DeleteProjectController">
+		<property name="service" ref="projectService" />
+		<property name="viewName" value="redirect:listProjects.do" />
+	</bean>
+	
+	<!--  Controlleri jota käytetään projektien luomiseen ja muokkaamiseen -->	
+	<bean name="projectController" class="projectmanagement.controllers.ProjectController">
+		<property name="projectService" ref="projectService" />
+		<property name="commandName" value="project" /><!-- formissa käytettävän objectin nimi -->
+		<property name="validator"	ref="projectValidator" /><!-- formin validaattori -->
+		<property name="formView" value="editProject" /><!-- lomakenäkymä -->
+		<property name="successView" value="showProject" /><!-- näkymä johon siirtytään jos lomakkeen tallentaminen onnistuu -->
+		<property name="editors"><!-- editorien määritys joilla muunnetaan string tarvittavaan muotoon esim projekti id Project -olioksi -->
+			<map>
+				<entry key="java.lang.String">
+					<bean class="projectmanagement.editors.PersonCollectionEditor">
+						<property name="service" ref="userService" />
+					</bean>
+				</entry>
+				<entry key="projectmanagement.model.Person">
+					<bean class="projectmanagement.editors.PersonEditor">
+						<property name="service" ref="userService" />
+					</bean>
+				</entry>
+				<entry key="java.util.Date" value-ref="customDateEditor">
+				
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean name="deleteTaskController" class="projectmanagement.controllers.DeleteTaskController">
+		<property name="service" ref="projectService" />
+		<property name="viewName" value="showProject" />
+	</bean>
+	
+	<bean name="taskController" class="projectmanagement.controllers.TaskController">
+		<property name="service" ref="projectService" />
+		<property name="validator" ref="taskValidator" />
+		<property name="commandName" value="task" />
+		<property name="formView" value="editTask" />
+		<property name="successView" value="showProject" />
+		<property name="editors">
+			<map>
+				<entry key="projectmanagement.model.Project">
+					<bean class="projectmanagement.editors.ProjectEditor">
+						<property name="service" ref="projectService" />
+					</bean>
+				</entry>
+				<entry key="projectmanagement.model.Person">
+					<bean class="projectmanagement.editors.PersonEditor">
+						<property name="service" ref="userService" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<!--  Controlleri uuden käyttäjän luontiin. (Samaa controlleria pystytään käyttämään myös käyttäjientietojen muokkaukseen -->
+	<bean name="personController" class="projectmanagement.controllers.PersonController">
+		<property name="service" ref="userService" />
+		<property name="commandName" value="person" />
+		<property name="validator" ref="personValidator"/> 
+		<property name="formView" value="editPerson" />
+		<property name="successView" value="redirect:/listProjects.do" />
+	</bean>
+	
+	<!-- Mapataan osoitteet oikeille controllereille -->
+	<bean name="urlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="editPerson.do">personController</prop>
+				<prop key="deleteProject.do">deleteProjectController</prop>
+				<prop key="editProject.do">projectController</prop>
+				<prop key="deleteTask.do">deleteTaskController</prop>
+				<prop key="editTask.do">taskController</prop>
+				<prop key="showProject.do">showProjectController</prop>
+				<prop key="listProjects.do">listProjectsController</prop>
+				<prop key="*.do">errorController</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!--  Näkymien polun selvitys, määritellään etuliite sekä pääte annetule näkymälle -->
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+</beans>

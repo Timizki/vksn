@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+	<definition name="template" template="/WEB-INF/jsp/template.jsp">
+		<put-attribute name="title" value="Gathering" />
+		<put-attribute name="alternativeTitle" value="" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="navigation" value="/WEB-INF/jsp/navigation.jsp" />
+	</definition>
+
+	<definition name="login" extends="template">
+		<put-attribute name="title" value="Gathering - login" />
+		<put-attribute name="alternativeTitle" value="" />
+		<put-attribute name="body" value="/WEB-INF/jsp/login.jsp" />
+		<put-attribute name="navigation" value="" />
+	</definition>
+
+	<definition name="event.browse" extends="template">
+		<put-attribute name="body" value="/WEB-INF/jsp/event/browse.jsp" />
+		<put-attribute name="title" value="Browse event" /> <!-- Should this be key to message bundle? -->
+	</definition>
+
+	<definition name="event.edit" extends="template">
+		<put-attribute name="body" value="/WEB-INF/jsp/event/edit.jsp" />
+		<put-attribute name="title" value="Edit event" />
+		<put-attribute name="alternativeTitle" value="Create event" />
+	</definition>
+
+	<definition name="event.view" extends="template">
+		<put-attribute name="body" value="/WEB-INF/jsp/event/view.jsp" />
+		<put-attribute name="title" value="Event" />
+	</definition>
+
+	<definition name="event.users.view" extends="template">
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/event/viewUsersEvent.jsp" />
+		<put-attribute name="title" value="Osallistujat" />
+	</definition>
+	<definition name="user.edit" extends="template">
+		<put-attribute name="body" value="/WEB-INF/jsp/user/edit.jsp" />
+		<put-attribute name="title" value="Edit user" />
+		<put-attribute name="alternativeTitle" value="Create user" />
+	</definition>
+</tiles-definitions>

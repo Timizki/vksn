@@ -1,0 +1,102 @@
+package net.vksn.gathering.web.controllers;
+
+import java.beans.PropertyEditor;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import net.vksn.bedrock.model.User;
+import net.vksn.bedrock.query.UserQuery;
+import net.vksn.bedrock.services.UserService;
+import net.vksn.gathering.model.Event;
+import net.vksn.gathering.model.Instance;
+import net.vksn.gathering.services.EventService;
+import net.vksn.gathering.utils.InstanceHelper;
+
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
+
+public class EditEventController extends SimpleFormController {
+	private EventService eventService;
+	private UserService userService;
+	private Map<Class, PropertyEditor> editors;
+	
+	public void setEditors(Map<Class, PropertyEditor> editors) {
+		this.editors = editors;
+	}
+
+	public void setEventService(EventService eventService) {
+		this.eventService = eventService;
+	}
+	
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Override
+	protected Object formBackingObject(HttpServletRequest request)
+			throws Exception {
+		String eventId = request.getParameter("eventId");
+		EventForm form = new EventForm();
+		Event event = null;
+		try {
+			Integer id = Integer.valueOf(eventId);
+			event = eventService.get(id);
+			if(!event.getInstances().isEmpty()) {
+				form.setBeginDate(InstanceHelper.getFirstInstance(event).getDate());
+				form.setEndDate(InstanceHelper.getLastInstance(event).getDate());
+			}
+		}
+		catch(NumberFormatException e) {
+			event = new Event(); 
+		}
+		
+		form.setEvent(event);
+		return form;
+	}
+
+	
+	@Override
+	protected ModelAndView showForm(HttpServletRequest request,
+			HttpServletResponse response, BindException errors, Map controlModel)
+			throws Exception {
+		ModelAndView mav =  super.showForm(request, response, errors, controlModel);
+		UserQuery query = new UserQuery();
+		List<User> users = (List<User>)userService.getByQuery(query);
+		mav.addObject("users", users);
+		return mav;
+	}
+
+	@Override
+	protected void initBinder(HttpServletRequest request,
+			ServletRequestDataBinder binder) throws Exception {
+		for(Class clazz : editors.keySet()) {
+			binder.registerCustomEditor(clazz, editors.get(clazz));
+		}
+	}
+
+	
+	@Override
+	protected ModelAndView onSubmit(HttpServletRequest request,
+			HttpServletResponse response, Object command, BindException errors)
+			throws Exception {
+		EventForm form = (EventForm)command;
+		Event event = form.getEvent();
+		List<Date> dates = InstanceHelper.getInstanceDates(form.getBeginDate(), form.getEndDate(), form.getInterval());
+		for(Date date : dates) {
+			Instance instance = new Instance();
+			instance.setDate(date);
+			event.getInstances().add(instance);
+		}
+		eventService.store(event);
+		ModelAndView mav = new ModelAndView(getSuccessView());
+		mav.addObject("eventId", event.getId());
+		return mav;
+	}
+	
+}

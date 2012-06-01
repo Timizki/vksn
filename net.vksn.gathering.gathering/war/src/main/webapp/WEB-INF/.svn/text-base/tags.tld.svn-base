@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
+	web-jsptaglibrary_2_0.xsd" version="2.0">
+	<tlib-version>1.0</tlib-version>
+	<function>
+		<description>Resolves event's first instance</description>
+		<name>firstInstance</name>
+		<function-class>net.vksn.gathering.utils.InstanceHelper</function-class>
+		<function-signature>
+			net.vksn.gathering.model.Instance getFirstInstance(net.vksn.gathering.model.Event)
+		</function-signature>
+	</function>
+	<function>
+		<description>Resolves event's last instance</description>
+		<name>lastInstance</name>
+		<function-class>net.vksn.gathering.utils.InstanceHelper</function-class>
+		<function-signature>
+			net.vksn.gathering.model.Instance getLastInstance(net.vksn.gathering.model.Event)
+		</function-signature>
+	</function>
+	<function>
+		<description>Resolves event's next instance</description>
+		<name>nextInstance</name>
+		<function-class>net.vksn.gathering.utils.InstanceHelper</function-class>
+		<function-signature>
+			net.vksn.gathering.model.Instance getNextInstance(net.vksn.gathering.model.Event)
+		</function-signature>
+	</function>
+		<function>
+		<description>Resolves event's next instance from given date</description>
+		<name>nextInstanceFromDate</name>
+		<function-class>net.vksn.gathering.utils.InstanceHelper</function-class>
+		<function-signature>
+			net.vksn.gathering.model.Instance getNextInstanceFromDate(net.vksn.gathering.model.Event, java.util.Date)
+		</function-signature>
+	</function>
+</taglib>

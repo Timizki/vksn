@@ -1,0 +1,28 @@
+package net.vksn.bedrock.dao.hibernate;
+
+
+import net.vksn.bedrock.AbstractDatabaseTestCase;
+import net.vksn.bedrock.dao.UserDAO;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:net/vksn/bedrock/dataAccessContext.xml",
+		"classpath:net/vksn/bedrock/dataAccessContext.xml",
+		"classpath:net/vksn/bedrock/dataSourceContext.xml",
+		"classpath:net/vksn/bedrock/transactionContext.xml"})
+public class UserServiceTest extends AbstractDatabaseTestCase {
+	
+	@Autowired
+	private UserDAO userDAO;
+	
+	@Test
+	public void getUser() {
+		//dummy
+		
+	}
+}

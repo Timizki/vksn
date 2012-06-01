@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename Java project &apos;auto-install&apos; to &apos;auto-setup&apos;&#x0A;- Original element: &apos;auto-install&apos;&#x0A;- Renamed element: &apos;auto-install&apos;&#x0A;- Update references to refactored element" description="Rename Java project &apos;auto-install&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=auto-install" name="auto-setup" references="true" stamp="1326898823070" version="1.0"/>
+</session>
