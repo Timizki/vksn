@@ -11,7 +11,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>sitemap-web</artifactId>
+    <artifactId>Web</artifactId>
     <packaging>jar</packaging>
     <name>Sitemap - Web UI</name>
 

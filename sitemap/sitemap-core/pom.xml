@@ -11,9 +11,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     
-    <artifactId>sitemap-core</artifactId>
+    <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <name>Sitemap - Core</name>
+    <name>Sitemap - Basic Implementation</name>
     
     <dependencies>
 		<dependency>
