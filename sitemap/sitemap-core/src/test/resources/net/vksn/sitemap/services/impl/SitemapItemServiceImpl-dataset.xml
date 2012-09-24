@@ -1,0 +1,17 @@
+<dataset>
+	<sitemap
+		ID="1"
+		NAME="/"
+	/>
+	<sitemap_item
+		ID="1"
+		NAME="parent"
+		PARENT_ID="[NULL]"
+	/>	
+	<sitemap_item
+		ID="2"
+		NAME="document"
+		PARENT_ID="1"
+	/>
+	
+</dataset>

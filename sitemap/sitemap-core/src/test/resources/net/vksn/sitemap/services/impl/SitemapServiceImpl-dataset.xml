@@ -1,0 +1,21 @@
+<dataset>
+	<sitemap
+		ID="3"
+		NAME="/root"
+	/>
+	<sitemap
+		ID="2"
+		NAME="/"
+	/>
+	
+	<sitemap
+		ID="1"
+		NAME="/notRoot"
+	/>
+	
+	<sitemap
+		ID="4"
+		NAME="/asdw"
+	/>
+
+</dataset>
