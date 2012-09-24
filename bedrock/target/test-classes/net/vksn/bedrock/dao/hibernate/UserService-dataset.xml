@@ -1,5 +1,7 @@
 <dataset>
 	<users
-		username="Timii"
-		password="kanikasi"	/>
+		ID="1"
+		USERNAME="Timii"
+		PASSWORD="kanikasi"
+	/>
 </dataset>
