@@ -13,6 +13,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
@@ -42,12 +43,17 @@ public abstract class AbstractDatabaseTestCase {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private IDataSet getDataSet(IDatabaseConnection connection) {
 		FlatXmlDataSet dataSet = null;
 		try {
 			ITableFilter filter = new DatabaseSequenceFilter(connection);
+			
 			dataSet = new FlatXmlDataSet(getDataSetXmlPath());
-			new FilteredDataSet(filter, dataSet);
+			ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
+			replacementDataset.addReplacementObject("[NULL]", null);
+			new FilteredDataSet(filter, replacementDataset);
+			
 		} catch (DataSetException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
