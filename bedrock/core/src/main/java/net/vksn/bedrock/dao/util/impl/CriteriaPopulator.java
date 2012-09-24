@@ -1,6 +1,5 @@
 package net.vksn.bedrock.dao.util.impl;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -35,23 +34,8 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 						criteria.add(Restrictions.idEq(method.invoke(query, new Object[0])));
 					}
 					else if (returnType.equals(String.class)) {												
-						Match match = method.getAnnotation(Match.class);
-						MatchMode mode = MatchMode.ANYWHERE;
-						if(match != null) {
-							if("EXACT".equals(match.mode())) {
-								mode = MatchMode.EXACT;
-							}
-							else if("END".equals(match.mode())) {
-								mode = MatchMode.END;
-							}
-							else if("START".equals(match.mode())) {
-								mode = MatchMode.START;
-							}
-						}
-						
-						criteria.add(Restrictions.ilike(propertyName,
-								(String) method.invoke(query, new Object[0]),mode));
-						} 
+						populateString(method, propertyName, query, criteria);
+					} 
 					else if (returnType.equals(Integer.class)) {
 						criteria.add(Restrictions.eq(propertyName,
 								method.invoke(query, new Object[0])));
@@ -82,6 +66,26 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 				}
 			}
 		}
+	}
+	
+	protected Criteria populateString(Method method, String propertyName, Query query, Criteria criteria) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		Match match = method.getAnnotation(Match.class);
+		MatchMode mode = MatchMode.ANYWHERE;
+		if(match != null) {
+			if("EXACT".equals(match.mode())) {
+				mode = MatchMode.EXACT;
+			}
+			else if("END".equals(match.mode())) {
+				mode = MatchMode.END;
+			}
+			else if("START".equals(match.mode())) {
+				mode = MatchMode.START;
+			}
+		}
+		
+		criteria.add(Restrictions.ilike(propertyName,
+				(String) method.invoke(query, new Object[0]),mode));
+		return criteria;
 	}
 
 }

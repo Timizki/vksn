@@ -2,8 +2,6 @@ package net.vksn.bedrock.query;
 
 import java.util.Date;
 
-import javax.persistence.Id;
-
 import net.vksn.bedrock.model.User;
 
 public class Query {
@@ -43,5 +41,11 @@ public class Query {
 	}
 	public void setCreatedAfter(Date createdAfter) {
 		this.createdAfter = createdAfter;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 }
