@@ -1,5 +1,6 @@
 package net.vksn.sitemap.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import net.vksn.bedrock.model.Property;
@@ -10,6 +11,7 @@ public class SitemapItemProperty extends Property {
 	private SitemapItem sitemapItem;
 
 	@Override
+	@Column(insertable=false, updatable=false)
 	public Integer getId() {
 		if (this.sitemapItem != null) {
 			return sitemapItem.getId();
