@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import net.vksn.bedrock.model.Entity;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,5 +55,28 @@ public class CriteriaPopulatorTest {
 		populator.populateString(method, "name", query, criteria);
 		assertEquals("CriteriaImpl(Sitemap:this[][name ilike /])", criteria.toString());
 		
+	}
+	
+	@Test
+	public void testPopulateString_twoPartPropertyName() throws Exception {
+		String property = populator.getPropertyName("getFreeText");
+		assertEquals("freeText", property);
+	}
+	
+	@Test
+	public void testJoinPopulation() {
+		Criteria criteria = new CriteriaImpl("Entity", (SessionImplementor) sessionFactory.getCurrentSession());
+		TestQuery query = new TestQuery();
+		query.setEntity(new TestEntity(1));
+		populator.populateCriteria(criteria, query);
+		
+		assertEquals("CriteriaImpl(Entity:this[][name ilike /, (Entity_id=1)])", criteria.toString());
+
+	}
+	
+	class TestEntity extends Entity {
+		public TestEntity(Integer id) {
+			setId(id);
+		}
 	}
 }

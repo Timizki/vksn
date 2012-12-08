@@ -9,7 +9,7 @@ import org.hibernate.Criteria;
 
 public abstract class AbstractCriteriaPopulator implements Populator {
 
-	abstract void populateCriteria(Criteria criteria, Query query);	
+	abstract Criteria populateCriteria(Criteria criteria, Query query);	
 	
 	public boolean isGetter(Method method) {
 		if(method.getName().startsWith("get") && method.getParameterTypes().length == 0) {
@@ -26,7 +26,9 @@ public abstract class AbstractCriteriaPopulator implements Populator {
 	}
 	
 	public String getPropertyName(String methodName) {
-		return methodName.substring(3);
+			String propertyName = methodName.substring(3);
+			propertyName = Character.toLowerCase(propertyName.charAt(0)) + propertyName.substring(1);
+			return propertyName;
 	}	
 	
 	public boolean isNullGetProperty(Method method, Query query) {

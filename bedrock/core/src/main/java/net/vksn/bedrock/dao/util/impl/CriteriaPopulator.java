@@ -5,9 +5,11 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 
 import net.vksn.bedrock.dao.annotations.Match;
+import net.vksn.bedrock.model.Entity;
 import net.vksn.bedrock.query.Query;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,7 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 	
 	@SuppressWarnings("rawtypes")
 	@Override	
-	public void populateCriteria(Criteria criteria, Query query) {
+	public Criteria populateCriteria(Criteria criteria, Query query) {
 		Method[] queryMethods = query.getClass().getMethods();
 		for (Method method : queryMethods) {
 			String methodName = method.getName();
@@ -27,9 +29,15 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 					continue;
 				}
 
-				String propertyName = methodName.substring(3).toLowerCase();
-				Class returnType = method.getReturnType();
+				Class<?> returnType = method.getReturnType();
+				String propertyName = getPropertyName(methodName);
+				
 				try {
+					if(returnType.isAssignableFrom(Entity.class)) {
+						criteria.add(Restrictions.conjunction().add(Restrictions.eq(returnType.getSimpleName()+"_id",((Entity)method.invoke(query, new Object[0])).getId())));
+//						criteria.setFetchMode(returnType.getName(), FetchMode.JOIN);
+					}
+					
 					if (methodName.equals("getId")) {
 						criteria.add(Restrictions.idEq(method.invoke(query, new Object[0])));
 					}
@@ -40,6 +48,9 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 						criteria.add(Restrictions.eq(propertyName,
 								method.invoke(query, new Object[0])));
 					} 
+					else if(returnType.equals(Boolean.class)) {
+						criteria.add(Restrictions.eq(propertyName, method.invoke(query, new Object[0])));
+					}
 					
 //					TODO:Must implement date range, so not before and not after 
 //					query parameters aren't mixed with entity attributes.
@@ -53,7 +64,6 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 						criteria.add(Restrictions.in(propertyName,
 								(Collection) method.invoke(query, new Object[0])));
 					} 
-	
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 					continue;
@@ -66,7 +76,10 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 				}
 			}
 		}
+		return criteria;
 	}
+	
+
 	
 	protected Criteria populateString(Method method, String propertyName, Query query, Criteria criteria) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Match match = method.getAnnotation(Match.class);
