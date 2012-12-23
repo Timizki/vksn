@@ -35,7 +35,7 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 				try {
 					if(returnType.isAssignableFrom(Entity.class)) {
 						criteria.add(Restrictions.conjunction().add(Restrictions.eq(returnType.getSimpleName()+"_id",((Entity)method.invoke(query, new Object[0])).getId())));
-//						criteria.setFetchMode(returnType.getName(), FetchMode.JOIN);
+						criteria.setFetchMode(returnType.getName()+".id", FetchMode.JOIN);
 					}
 					
 					if (methodName.equals("getId")) {
@@ -54,7 +54,7 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 					
 //					TODO:Must implement date range, so not before and not after 
 //					query parameters aren't mixed with entity attributes.
-//					Mayby some kind of annotatios which terminates entity attributes name to query
+//					Meaby some kind of annotatios which terminates entity attributes name to query
 //					else if (returnType.equals(Date.class)) {
 //						criteria.add(Restrictions.eq(propertyName,
 //								method.invoke(query, null)));

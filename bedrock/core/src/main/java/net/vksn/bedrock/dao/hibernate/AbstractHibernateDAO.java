@@ -33,6 +33,10 @@ public abstract class AbstractHibernateDAO<T extends Entity> implements GenericD
 		this.clazz = entityClass;
 	}
 	
+	protected CriteriaPopulator getPopulator() {
+		return this.populator;
+	}
+	
 	public void setPopulator(CriteriaPopulator populator) {
 		this.populator = populator;
 	}
@@ -66,21 +70,25 @@ public abstract class AbstractHibernateDAO<T extends Entity> implements GenericD
 		return criteria.list();
 	}
 
+	@Transactional
 	public void store(T entity) throws EntityNotFoundException {
 		getSessionFactory().getCurrentSession().saveOrUpdate(entity);
 	}
 
+	@Transactional
 	public void remove(int id) throws EntityNotFoundException {
 		T entity = get(id);
 		getSessionFactory().getCurrentSession().delete(entity);
 	}
 
+	@Transactional
 	public void delete(int id) throws EntityNotFoundException {
 		T entity = get(id);
 		entity.setDeleted(new Date());
 		store(entity);
 	}
 
+	@Transactional
 	public void undelete(int id) throws EntityNotFoundException {
 		T entity = get(id);
 		entity.setDeleted(null);
