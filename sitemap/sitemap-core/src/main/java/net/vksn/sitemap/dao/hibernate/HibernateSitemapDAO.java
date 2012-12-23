@@ -9,6 +9,7 @@ import net.vksn.sitemap.dao.SitemapDAO;
 import net.vksn.sitemap.model.Sitemap;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class HibernateSitemapDAO extends AbstractHibernateDAO<Sitemap> implements SitemapDAO {
@@ -17,24 +18,35 @@ public class HibernateSitemapDAO extends AbstractHibernateDAO<Sitemap> implement
 		super(Sitemap.class);
 	}
 
+	@Transactional(readOnly = true)
 	public Sitemap getRootSitemap() throws EntityNotFoundException {		
 		return null;
 	}
-
+	
+	@Transactional(readOnly = true)
+	public Sitemap getDefaultSitemap() {
+		SitemapQuery query = new SitemapQuery();
+		query.setDefaultSitemap(true);
+		Collection<Sitemap> sitemaps = super.getByQuery(query);
+		return sitemaps.iterator().next();
+	}
+	
+	@Transactional(readOnly = true)
 	public Collection<Sitemap> getAllSitemaps() {
 		Query q = new Query();
 		return super.getByQuery(q);
 	}
 
+	@Transactional(readOnly=true)
 	public Sitemap getSitemapByName(String name) throws EntityNotFoundException {
 		SitemapQuery query = new SitemapQuery();
 		query.setName(name);
 		Collection<Sitemap> sitemaps = super.getByQuery(query);
 		if(sitemaps.isEmpty()) {
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(Sitemap.class, name);
 		}
 		else if(sitemaps.size() > 1) {
-			throw new EntityNotFoundException();
+			throw new EntityNotFoundException(Sitemap.class, name);
 		}
 		return sitemaps.iterator().next();
 	}

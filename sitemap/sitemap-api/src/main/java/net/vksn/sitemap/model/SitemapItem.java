@@ -11,9 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 @Entity
 public class SitemapItem extends net.vksn.bedrock.model.Entity {
@@ -35,7 +34,9 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	@Column
+	
+	@OneToOne
+	@JoinColumn(name="sitemap_id", insertable=false, updatable=false, nullable=true)
 	public Sitemap getSitemap() {
 		return sitemap;
 	}

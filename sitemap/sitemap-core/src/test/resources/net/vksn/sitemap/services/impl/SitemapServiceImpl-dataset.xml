@@ -2,20 +2,25 @@
 	<sitemap
 		ID="3"
 		NAME="/root"
+		DEFAULT_SITEMAP="TRUE"
 	/>
 	<sitemap
 		ID="2"
 		NAME="/"
+		DEFAULT_SITEMAP="FALSE"
+		
 	/>
 	
 	<sitemap
 		ID="1"
 		NAME="/notRoot"
+		DEFAULT_SITEMAP="FALSE"
 	/>
 	
 	<sitemap
 		ID="4"
 		NAME="/asdw"
+		DEFAULT_SITEMAP="FALSE"
 	/>
 
 </dataset>

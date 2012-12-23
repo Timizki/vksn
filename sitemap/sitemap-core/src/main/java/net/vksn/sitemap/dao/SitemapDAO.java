@@ -8,6 +8,8 @@ import net.vksn.sitemap.model.Sitemap;
 
 public interface SitemapDAO  extends GenericDAO<Sitemap> {
 
+	Sitemap getDefaultSitemap();
+	
 	Sitemap getRootSitemap() throws EntityNotFoundException;
 	
 	Collection<Sitemap> getAllSitemaps();

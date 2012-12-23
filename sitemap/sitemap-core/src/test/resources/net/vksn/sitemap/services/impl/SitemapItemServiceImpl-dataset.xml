@@ -2,16 +2,27 @@
 	<sitemap
 		ID="1"
 		NAME="/"
+		DEFAULT_SITEMAP="TRUE"
 	/>
 	<sitemap_item
 		ID="1"
 		NAME="parent"
 		PARENT_ID="[NULL]"
+		sitemap_id="1"
 	/>	
 	<sitemap_item
 		ID="2"
 		NAME="document"
 		PARENT_ID="1"
+		sitemap_id="1"
 	/>
+	<sitemap_item
+		ID="3" 
+		NAME="child"
+		PARENT_ID="2"
+		SITEMAP_ID="1"
+	/>
+	
+	
 	
 </dataset>

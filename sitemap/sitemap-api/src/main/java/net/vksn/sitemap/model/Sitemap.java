@@ -10,8 +10,13 @@ import org.hibernate.annotations.CollectionOfElements;
 
 @Entity
 public class Sitemap extends net.vksn.bedrock.model.Entity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Set<SitemapItem> sitemapItems;
 	private String name;
+	private boolean defaultSitemap;
 	
 	@OneToMany
 	public Set<SitemapItem> getSitemapItems() {
@@ -27,6 +32,22 @@ public class Sitemap extends net.vksn.bedrock.model.Entity {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Column
+	public boolean getDefaultSitemap() {
+		return this.defaultSitemap;
+	}
+	public boolean isDefaultSitemap() {
+		return defaultSitemap;  	
+	}
+	//TODO: parametri booleaniksi ja selvitä miksi siihen syötetään Null
+	public void setDefaultSitemap(Boolean isDefault) {
+		if(isDefault != null) {
+			
+			this.defaultSitemap = isDefault;
+		}
+		this.defaultSitemap = false;
+		
 	}
 	
 }

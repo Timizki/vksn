@@ -9,6 +9,8 @@ public interface SitemapService {
 	
 	Sitemap getRootSitemap() throws EntityNotFoundException;	
 	
+	Sitemap getDefaultSitemap();
+	
 	Collection<Sitemap> getAllSitemaps();
 	
 	Sitemap getSitemap(int id) throws EntityNotFoundException;
