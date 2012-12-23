@@ -17,6 +17,7 @@ import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -42,17 +43,21 @@ public abstract class AbstractDatabaseTestCase {
 			throw new RuntimeException("Could not initialize database " + e);
 		}
 	}
+	
+	@After
+	public void tearDown() throws ClassNotFoundException, SQLException, DatabaseUnitException {
+		IDatabaseConnection con = getConnection();
+		DatabaseOperation.DELETE_ALL.execute(con, getDataSet(con));
+	}
 
 	@SuppressWarnings("deprecation")
 	private IDataSet getDataSet(IDatabaseConnection connection) {
 		FlatXmlDataSet dataSet = null;
-		try {
-			ITableFilter filter = new DatabaseSequenceFilter(connection);
-			
+		
+		try {	
 			dataSet = new FlatXmlDataSet(getDataSetXmlPath());
-			ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
-			replacementDataset.addReplacementObject("[NULL]", null);
-			new FilteredDataSet(filter, replacementDataset);
+			ITableFilter filter = new DatabaseSequenceFilter(connection);
+			new FilteredDataSet(filter, dataSet);
 			
 		} catch (DataSetException e) {
 			throw new RuntimeException(e);
@@ -61,7 +66,9 @@ public abstract class AbstractDatabaseTestCase {
 		} catch (SQLException e) {
 			throw new RuntimeException("Could not create filter " + e);
 		}
-		return dataSet;
+		ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
+		replacementDataset.addReplacementObject("[NULL]", null);
+		return replacementDataset;
 	}
 
 	private InputStream getDataSetXmlPath() {
