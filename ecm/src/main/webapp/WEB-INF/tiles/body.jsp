@@ -1,2 +1,3 @@
-THIS IS BODY
-${controllerMessage}
+THIS IS BODY<br/>
+${controllerMessage}<br/>
+${sitemapItem}

@@ -2,14 +2,14 @@ package net.vksn.ecm;
 
 import junit.framework.Assert;
 
-import org.junit.Test;
+import net.vksn.ecm.controllers.HomeController;
+
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 
 public class HomeControllerTest {
 
-	@Test
 	public void testController() {
 		HomeController controller = new HomeController();
 		Model model = new ExtendedModelMap();
