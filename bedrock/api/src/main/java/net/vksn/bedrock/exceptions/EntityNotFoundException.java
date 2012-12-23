@@ -24,7 +24,7 @@ public class EntityNotFoundException extends Exception {
 	}
 	
 	public EntityNotFoundException(Class<? extends Entity> clazz, Object identifier) {
-		super("Could not entity " + clazz.getCanonicalName() + " with identifier " + identifier);
+		super("Could not find entity " + clazz.getCanonicalName() + " with identifier " + identifier);
 		this.identifier = identifier;
 		this.entityClass = clazz;
 	}
