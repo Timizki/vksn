@@ -39,17 +39,20 @@ public class HomeController {
 		model.addAttribute("controllerMessage",
 				"This is the message from the controller!");
 		
-		String path = request.getServletPath();
+		String path = request.getServletPath();	
+		SitemapItem item = null;
 		try {
 			int sitemapId = (Integer)request.getSession().getAttribute(SitemapFilter.CURRENT_SITEMAP);
 			path = path.substring(1, path.lastIndexOf("."));
-			SitemapItem item = sitemapItemService.getItemByPath(sitemapId, path.split("/"));
+			item = sitemapItemService.getItemByPath(sitemapId, path.split("/"));
 			model.addAttribute("sitemapItem", item);
 		} catch (EntityNotFoundException e) {			
 			e.printStackTrace();
+			model.addAttribute("error", e);
+			return "error";
 		}
 		
-		return path.substring(path.lastIndexOf("/") + 1, path.length());
+		return item.getDecorationName();
 	}
 
 }

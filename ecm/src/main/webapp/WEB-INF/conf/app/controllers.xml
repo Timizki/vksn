@@ -9,7 +9,7 @@
 
 	<!-- Scans within the base package of the application for @Components to 
 		configure as beans -->
-	<context:component-scan base-package="net.vksn.ecm" />
+	<context:component-scan base-package="net.vksn.ecm.controllers" />
 
 	<tx:annotation-driven />
 	<mvc:annotation-driven />

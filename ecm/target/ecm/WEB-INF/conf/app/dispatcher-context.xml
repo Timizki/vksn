@@ -22,6 +22,7 @@
 		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
 		<beans:property name="tilesInitializer" ref="tilesInitializer" />
 	</beans:bean>
+	
 	<beans:bean id="tilesInitializer" class="org.apache.tiles.factory.ECMTilesInitializer">
 		<beans:property name="tilesContainerFactory" ref="ecmTilesContainerFactory"/>
 	</beans:bean>
@@ -33,10 +34,8 @@
 	</beans:bean>
 	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.tiles3.TilesViewResolver">
 		<beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
-<!-- 		<beans:property name="setCache" value="false"/> -->
 	</beans:bean>
 
-	<!-- Imports user-defined @Controller beans that process client requests -->
 	<beans:import resource="controllers.xml" />
 
 
