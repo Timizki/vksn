@@ -2,6 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>master-pom</groupId>
+		<artifactId>master-pom</artifactId>
+		<version>0.5.0-SNAPSHOT</version>
+	</parent>
+
 	<groupId>net.vksn.ecm</groupId>
 	<artifactId>ecm</artifactId>
 	<packaging>war</packaging>
@@ -18,33 +24,21 @@
 	</properties>
 
 	<dependencies>
-			<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.0-beta3</version>
 		</dependency>
 		<!-- ECM system dependencies -->
 		<dependency>
 			<groupId>net.vksn.sitemap</groupId>
 			<artifactId>core</artifactId>
 			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.vksn.bedrock</groupId>
 			<artifactId>api</artifactId>
 			<version>0.5.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<!-- Apache Tiles -->
@@ -81,14 +75,6 @@
 			<version>1.0.0.GA</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<!-- <dependency> -->
-		<!-- <groupId>org.hibernate</groupId> -->
-		<!-- <artifactId>hibernate-validator</artifactId> -->
-		<!-- <version>4.0.0.GA</version> -->
-		<!-- <scope>compile</scope> -->
-		<!-- </dependency> -->
-		<!-- Spring Dependencies -->
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -130,52 +116,27 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${spring.version}</version>
-			<type>jar</type>
-			<scope>test</scope>
 		</dependency>
-
-
-		<!-- logging -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>runtime</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-
-
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.3.0.Final</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.vksn.test</groupId>
+			<artifactId>test</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- Servlet dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -183,29 +144,6 @@
 			<version>2.5</version>
 		</dependency>
 	</dependencies>
-
-<!-- 	<repositories> -->
-<!--		JBoss Repository used for Java EE 6 pieces --> 
-<!-- 		<repository> -->
-<!-- 			<id>repository.jboss.org</id> -->
-<!-- 			<name>JBoss Repository</name> -->
-<!-- 			<url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url> -->
-<!-- 		</repository> -->
-<!-- 		<repository> -->
-<!-- 			<id>central</id> -->
-<!-- 			<name>central</name> -->
-<!-- 			<url>http://repo1.maven.org</url> -->
-<!-- 		</repository> -->
-<!-- 		<repository> -->
-<!-- 			<id>org.springframework.maven.milestone</id> -->
-<!-- 			<name>Spring Maven Milestone Repository</name> -->
-<!-- 			<url>http://maven.springframework.org/milestone</url> -->
-<!-- 			<snapshots> -->
-<!-- 				<enabled>false</enabled> -->
-<!-- 			</snapshots> -->
-<!-- 		</repository> -->
-<!-- 	</repositories> -->
-
 	<build>
 		<finalName>ecm</finalName>
 		<plugins>

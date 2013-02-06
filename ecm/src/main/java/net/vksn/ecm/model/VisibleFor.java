@@ -1,5 +1,7 @@
 package net.vksn.ecm.model;
 
-public class VisibleFor {
+import net.vksn.bedrock.model.Entity;
+
+public class VisibleFor extends Entity {
 
 }

@@ -5,10 +5,4 @@
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
  	
-	<bean id="definitionDAO" class="net.vksn.ecm.tiles.dao.DatabaseDefinitionDAO">
-		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="definitionsReader" ref="definitionsReader"/>
-	</bean>
-	<bean id="definitionsReader" class="net.vksn.ecm.tiles.dao.DatabaseDefinitionsReader" />
-	
 </beans>

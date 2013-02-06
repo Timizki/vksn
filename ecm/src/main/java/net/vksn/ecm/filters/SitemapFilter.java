@@ -11,15 +11,16 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-
 import net.vksn.sitemap.model.Sitemap;
 import net.vksn.sitemap.services.SitemapService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 public class SitemapFilter implements Filter {
-	private static final Logger log = Logger.getLogger(SitemapFilter.class);
+	private static final Logger log = LogManager.getLogger(SitemapFilter.class);
 	public static final String CURRENT_SITEMAP = "currentSitemapId";
 	private SitemapService sitemapService;
 

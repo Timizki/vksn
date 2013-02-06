@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.vksn.ecm.model.Definition;
+import net.vksn.ecm.model.TilesDefinition;
 import static org.junit.Assert.assertEquals;
 import org.apache.tiles.definition.DefinitionsReader;
 import org.junit.Before;
@@ -24,8 +24,8 @@ public class DatabaseDefinitionsReaderTest {
 	
 	@Test
 	public void testRead() {
-		List<Definition> databaseDefinitions = new ArrayList<Definition>();
-		Definition  def1 = new Definition();
+		List<TilesDefinition> databaseDefinitions = new ArrayList<TilesDefinition>();
+		TilesDefinition  def1 = new TilesDefinition();
 		def1.setId(1);
 		def1.setName("home");
 		databaseDefinitions.add(def1);

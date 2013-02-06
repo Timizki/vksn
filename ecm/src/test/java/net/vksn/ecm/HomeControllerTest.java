@@ -1,7 +1,6 @@
 package net.vksn.ecm;
 
 import junit.framework.Assert;
-
 import net.vksn.ecm.controllers.HomeController;
 
 import org.springframework.mock.web.MockHttpServletRequest;

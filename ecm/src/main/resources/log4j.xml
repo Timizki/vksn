@@ -3,30 +3,29 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
-	<appender name="console" class="org.apache.log4j.ConsoleAppender">
-		<param name="Target" value="System.out" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-5p: %c - %m%n" />
-		</layout>
-	</appender>
-	
+	<appenders>
+		<appender name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %c{1}:%L [%p] %m%n" />
+		</appender>
+		<appender type="File" name="File" fileName="${com.sun.aas.instanceRootURI}/logs/ecm.log">
+			<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %c{1}:%L [%p] %m%n" />
+	    </appender>
+	</appenders>
+
 	<!-- Application Loggers -->
 	<logger name="net.vksn.ecm">
 		<level value="debug" />
 	</logger>
-	
+
 	<!-- 3rdparty Loggers -->
-	<logger name="org.apache.tiles">
-		<level value="debug" />
-	</logger>
 	<logger name="org.springframework.core">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.beans">
 		<level value="info" />
 	</logger>
-	
+
 	<logger name="org.springframework.context">
 		<level value="info" />
 	</logger>
@@ -34,19 +33,19 @@
 	<logger name="org.springframework.web">
 		<level value="debug" />
 	</logger>
-	
+
 	<logger name="org.hibernate">
 		<level value="warn" />
 	</logger>
 	<logger name="org.apache.tiles">
 		<level value="debug" />
 	</logger>
-	
+
 
 	<!-- Root Logger -->
-	<root>
-		<priority value="warn" />
-		<appender-ref ref="console" />
+	<root level="DEBUG">
+		<appender-ref ref="File" />
+		<appender-ref ref="Console" />
 	</root>
-	
+
 </log4j:configuration>

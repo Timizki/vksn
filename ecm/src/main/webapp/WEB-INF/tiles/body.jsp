@@ -1,3 +1,3 @@
 THIS IS BODY<br/>
 ${controllerMessage}<br/>
-${sitemapItem}
+---- ${sitemapItem.properties['content']} ----
