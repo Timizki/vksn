@@ -1,1 +1,0 @@
--- footer, copyrighted by timii--- 
