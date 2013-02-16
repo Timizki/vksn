@@ -1,24 +1,23 @@
 package net.vksn.test;
 
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.dbunit.DatabaseUnitException;
-import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.DatabaseSequenceFilter;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.FilteredDataSet;
 import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.LowerCaseDataSet;
 import org.dbunit.dataset.ReplacementDataSet;
 import org.dbunit.dataset.filter.ITableFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
+import org.dbunit.dataset.xml.FlatXmlProducer;
 import org.dbunit.operation.DatabaseOperation;
-import org.junit.After;
 import org.junit.Before;
+import org.xml.sax.InputSource;
 
 /**
  * Base class for test that needs databse
@@ -27,48 +26,40 @@ import org.junit.Before;
  * 
  */
 public abstract class AbstractDatabaseTestCase {
+private IDatabaseConnection connection;
 
 	@Before
 	public void setUpDatabase() {
 		try {
-			final IDatabaseConnection connection = getConnection();
+			connection = getConnection();
+			
 			final IDataSet dataSet = getDataSet(connection);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Cannot find needed classes for hsqldb "
-					+ e);
 		} catch (DatabaseUnitException e) {
-			throw new RuntimeException("Could not initialize database " + e);
+			throw new RuntimeException("Could not initialize database!", e.getCause());
 		}
 	}
-	
-	@After
-	public void tearDown() throws ClassNotFoundException, SQLException, DatabaseUnitException {
-		IDatabaseConnection con = getConnection();
-		DatabaseOperation.DELETE_ALL.execute(con, getDataSet(con));
-	}
 
-	@SuppressWarnings("deprecation")
 	private IDataSet getDataSet(IDatabaseConnection connection) {
-		FlatXmlDataSet dataSet = null;
+		IDataSet dataSet = null;
 		
 		try {	
-			dataSet = new FlatXmlDataSet(getDataSetXmlPath());
-			ITableFilter filter = new DatabaseSequenceFilter(connection);
-			new FilteredDataSet(filter, dataSet);
+			InputSource xmlSource = new InputSource(getDataSetXmlPath());
+			FlatXmlProducer flatXmlProducer = new FlatXmlProducer(xmlSource, false, true, false);
 			
+			dataSet = new FlatXmlDataSet(flatXmlProducer);
+			ITableFilter filter = new DatabaseSequenceFilter(connection);
+			dataSet = new FilteredDataSet(filter, dataSet);
+			ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
+			replacementDataset.addReplacementObject("[NULL]", null);
+			return new LowerCaseDataSet(replacementDataset);
 		} catch (DataSetException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot find dataset file: ");
+			throw new RuntimeException(e.getCause());
 		} catch (SQLException e) {
 			throw new RuntimeException("Could not create filter " + e);
 		}
-		ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
-		replacementDataset.addReplacementObject("[NULL]", null);
-		return replacementDataset;
 	}
 
 	private InputStream getDataSetXmlPath() {
@@ -88,16 +79,5 @@ public abstract class AbstractDatabaseTestCase {
 		return in;
 	}
 
-	private IDatabaseConnection getConnection() throws ClassNotFoundException,
-			SQLException {
-		Class.forName("org.hsqldb.jdbcDriver");
-		try {
-			return new DatabaseConnection(DriverManager.getConnection(
-					"jdbc:hsqldb:mem:test", "sa", ""));
-		} catch (DatabaseUnitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return null;
-		}
-	}
+	protected abstract IDatabaseConnection getConnection() throws SQLException;
 }
