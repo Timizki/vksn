@@ -2,7 +2,7 @@
 	<sitemap
 		ID="3"
 		NAME="/root"
-		DEFAULT_SITEMAP="TRUE"
+		DEFAULT_SITEMAP="true"
 	/>
 	<sitemap
 		ID="2"
@@ -22,5 +22,18 @@
 		NAME="/asdw"
 		DEFAULT_SITEMAP="FALSE"
 	/>
+	
+	<sitemap_item
+			ID="1"
+			NAME="parent"
+			PARENT_ID="[NULL]"
+			sitemap_id="1"
+			page_position="0"
+		/>
+	<sitemap_item_properties
+			SITEMAP_ITEM_ID="1"
+			NAME="content"
+			VALUE="jep"
+		/>
 
 </dataset>

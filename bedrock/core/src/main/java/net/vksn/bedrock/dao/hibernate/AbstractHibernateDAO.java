@@ -54,25 +54,29 @@ public abstract class AbstractHibernateDAO<T extends Entity> implements GenericD
 		Criteria criteria = createCriteria();
 		criteria.add(Restrictions.idEq(id));
 		if (criteria.list().size() > 1) {
-			throw new NonUniqueObjectException("1L", clazz.toString());
+			throw new NonUniqueObjectException(id, clazz.toString());
 		}
 		if (criteria.list().isEmpty()) {
 			throw new EntityNotFoundException(clazz, id);
 		}
-		return (T) criteria.list().iterator().next();
+		T entity = (T) criteria.list().iterator().next();
+		
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public Collection<T> getByQuery(Query query) {
 		Criteria criteria = createCriteria();		
-		populator.populateCriteria(criteria, query);		
+		populator.populateCriteria(criteria, query);	
 		return criteria.list();
 	}
 
 	@Transactional
 	public void store(T entity) throws EntityNotFoundException {
-		getSessionFactory().getCurrentSession().saveOrUpdate(entity);
+		Session session = getSessionFactory().getCurrentSession();
+		session.saveOrUpdate(entity);
+		session.flush();
 	}
 
 	@Transactional

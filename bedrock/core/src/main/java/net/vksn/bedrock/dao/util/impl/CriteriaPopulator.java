@@ -33,7 +33,7 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 				String propertyName = getPropertyName(methodName);
 				
 				try {
-					if(returnType.isAssignableFrom(Entity.class)) {
+					if(Entity.class.isAssignableFrom(returnType)) {
 						criteria.add(Restrictions.conjunction().add(Restrictions.eq(returnType.getSimpleName()+"_id",((Entity)method.invoke(query, new Object[0])).getId())));
 						criteria.setFetchMode(returnType.getName()+".id", FetchMode.JOIN);
 					}
@@ -60,7 +60,7 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 //								method.invoke(query, null)));
 //					} 
 					
-					else if (returnType.equals(Collection.class)) {
+					else if (Collection.class.isAssignableFrom(returnType)) {
 						criteria.add(Restrictions.in(propertyName,
 								(Collection) method.invoke(query, new Object[0])));
 					} 
@@ -78,8 +78,6 @@ public class CriteriaPopulator extends AbstractCriteriaPopulator {
 		}
 		return criteria;
 	}
-	
-
 	
 	protected Criteria populateString(Method method, String propertyName, Query query, Criteria criteria) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Match match = method.getAnnotation(Match.class);

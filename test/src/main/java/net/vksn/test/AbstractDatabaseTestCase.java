@@ -1,6 +1,5 @@
 package net.vksn.test;
 
-
 import java.io.InputStream;
 import java.sql.SQLException;
 
@@ -26,33 +25,36 @@ import org.xml.sax.InputSource;
  * 
  */
 public abstract class AbstractDatabaseTestCase {
-private IDatabaseConnection connection;
+	private IDatabaseConnection connection;
 
 	@Before
 	public void setUpDatabase() {
 		try {
 			connection = getConnection();
-			
+
 			final IDataSet dataSet = getDataSet(connection);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} catch (DatabaseUnitException e) {
-			throw new RuntimeException("Could not initialize database!", e.getCause());
+			throw new RuntimeException("Could not initialize database!",
+					e.getCause());
 		}
 	}
 
 	private IDataSet getDataSet(IDatabaseConnection connection) {
 		IDataSet dataSet = null;
-		
-		try {	
+
+		try {
 			InputSource xmlSource = new InputSource(getDataSetXmlPath());
-			FlatXmlProducer flatXmlProducer = new FlatXmlProducer(xmlSource, false, true, false);
-			
+			FlatXmlProducer flatXmlProducer = new FlatXmlProducer(xmlSource,
+					false, true, false);
+
 			dataSet = new FlatXmlDataSet(flatXmlProducer);
 			ITableFilter filter = new DatabaseSequenceFilter(connection);
 			dataSet = new FilteredDataSet(filter, dataSet);
-			ReplacementDataSet replacementDataset = new ReplacementDataSet(dataSet);
+			ReplacementDataSet replacementDataset = new ReplacementDataSet(
+					dataSet);
 			replacementDataset.addReplacementObject("[NULL]", null);
 			return new LowerCaseDataSet(replacementDataset);
 		} catch (DataSetException e) {

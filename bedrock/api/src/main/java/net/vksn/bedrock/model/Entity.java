@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import net.vksn.bedrock.utils.EqualsHelper;
+
 @MappedSuperclass
 public abstract class Entity implements Serializable {
 	/**
@@ -47,4 +49,36 @@ public abstract class Entity implements Serializable {
 	public void setDeleted(Date deleted) {
 		this.deleted = deleted;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object != null && object instanceof Entity) {
+			Entity that = (Entity)object;
+			if(this.id != that.getId())  {
+				return false;
+			}
+			else if(!EqualsHelper.areEquals(this.getCreated(), that.getCreated())) {
+				return false;
+			}
+			else if(!EqualsHelper.areEquals(this.getDeleted(), that.getDeleted())) {
+				return false;
+			}
+			else {
+				
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int salt = 75;
+		int hashCodeRoot = id == null ? 0 : id.hashCode();
+		hashCodeRoot += created == null ? 0 : created.hashCode();
+		hashCodeRoot += deleted == null ? 0 : deleted.hashCode();
+		
+		return 37 * salt + hashCodeRoot;
+	}
+	
 }

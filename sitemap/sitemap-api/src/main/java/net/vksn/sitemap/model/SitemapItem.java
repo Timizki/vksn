@@ -1,18 +1,25 @@
 package net.vksn.sitemap.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Transient;
+
+import net.vksn.bedrock.utils.EqualsHelper;
 
 @Entity
 public class SitemapItem extends net.vksn.bedrock.model.Entity {
@@ -25,7 +32,9 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 	private Sitemap sitemap;
 	private SitemapItem parent;
 	private Set<SitemapItem> childrens;
-	private Collection<SitemapItemProperty> sitemapItemProperties;
+	private Map<String, String> properties;
+	private String decorationName;
+	private int pagePosition;
 	
 	@Column
 	public String getName() {
@@ -36,7 +45,7 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 	}
 	
 	@OneToOne
-	@JoinColumn(name="sitemap_id", insertable=false, updatable=false, nullable=true)
+	@JoinColumn(name="sitemap_id", nullable=true)
 	public Sitemap getSitemap() {
 		return sitemap;
 	}
@@ -45,30 +54,49 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 	}
 	
 	@ManyToOne
-    @JoinColumn(name="parent_id", insertable=false, updatable=false, nullable=true)
+    @JoinColumn(name="parent_id")
 	public SitemapItem getParent() {
 		return parent;
 	}
 	public void setParent(SitemapItem parent) {
 		this.parent = parent;
-	}
-	
+	}	
 	
 	@OneToMany(mappedBy="parent")
+	@OrderBy("pagePosition")
 	public Set<SitemapItem> getChildrens() {
 		return childrens;
 	}
 	public void setChildrens(Set<SitemapItem> childrens) {
 		this.childrens = childrens;
 	}
-	
-	@OneToMany
-	public Collection<SitemapItemProperty> getSitemapItemProperties() {
-		return sitemapItemProperties;
+
+	@Column
+	public String getDecorationName() {
+		return decorationName;
 	}
-	public void setSitemapItemProperties(
-			Collection<SitemapItemProperty> sitemapItemProperties) {
-		this.sitemapItemProperties = sitemapItemProperties;
+	
+	public void setDecorationName(String decorationName) {
+		this.decorationName = decorationName;
+	}
+	
+	@ElementCollection( fetch=FetchType.EAGER )
+	@MapKeyColumn(name="name")
+	@Column(name="value")
+	public Map<String, String> getProperties() {
+		return properties;
+	}
+		
+	public void setProperties(Map<String, String> properties) {
+		this.properties = properties;
+	}
+	@Column(nullable=false,updatable=true)
+	public int getPagePosition() {
+		return this.pagePosition;
+	}
+	
+	public void setPagePosition(int position) {
+		this.pagePosition = position;
 	}
 	
 	@Transient
@@ -82,5 +110,45 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 		}
 		Collections.reverse(path);
 		return path;
+	}
+	
+	@Transient
+	public String getPathAsString() {
+		StringBuilder builder = new StringBuilder();
+		List<String> path = getPath();
+		for(Iterator<String> i = path.iterator(); i.hasNext();) {
+			String slice = i.next();
+			builder.append(slice);
+			if(i.hasNext()) {
+				builder.append("/");
+			}
+		}
+		return builder.toString();
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if(object instanceof SitemapItem) {
+			SitemapItem that = (SitemapItem)object;
+			if(!EqualsHelper.areEquals(this.decorationName, that.getDecorationName())) {
+				return false;
+			}
+			else if(!EqualsHelper.areEquals(this.name, that.getName())) {
+				return false;
+			}
+			else {
+				return super.equals(that);
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int salt = 83;
+		int hashCodeRoot = super.hashCode();
+		hashCodeRoot += this.name == null ? 0 : this.name.hashCode();
+		hashCodeRoot += this.decorationName == null ? 0 : this.decorationName.hashCode();
+		return 37 * salt + hashCodeRoot;
 	}
 }

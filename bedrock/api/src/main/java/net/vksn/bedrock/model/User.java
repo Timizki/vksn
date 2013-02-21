@@ -1,12 +1,16 @@
 package net.vksn.bedrock.model;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-@Entity(name = "users")
+import net.vksn.bedrock.utils.EqualsHelper;
+
+@Entity(name="users")
 public class User extends net.vksn.bedrock.model.Entity {
 	
 	/**
@@ -15,8 +19,8 @@ public class User extends net.vksn.bedrock.model.Entity {
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-//	private Boolean enabled;
-	private List<Role> roles;
+	private boolean enabled;
+	private List<Group> groups;
 	
 	@Column(unique = true)
 	public String getUsername() {
@@ -36,23 +40,56 @@ public class User extends net.vksn.bedrock.model.Entity {
 		this.password = password;
 	}
 	
-//	@Column(nullable = false)
-//	public boolean getEnabled() {
-//		return this.enabled;
-//	}
-//	
-//	public void setEnabled(boolean enabled) {
-//		this.enabled = enabled;
-//	}
+	@Column(columnDefinition="boolean default true", nullable = false)
+	public boolean getEnabled() {
+		return this.enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	@ManyToMany
-	public List<Role> getRoles() {
-		return roles;
+	@JoinTable(name="users_sections")
+	public List<Group> getGroups() {
+		if(this.groups == null) {
+			this.groups = Collections.emptyList();
+		}
+		return groups;
 	}
 
-	public void setRoles(List<Role> roles) {
-		this.roles = roles;
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
 	}
 	
+	@Override
+	public boolean equals(Object object) {
+		if(object instanceof User) {
+			User that = (User)object;
+			if(!super.equals(that)) {
+				return false;
+			}
+			else if(!EqualsHelper.areEquals(this.username, that.username)) {
+				return false;
+			}
+			else if(!EqualsHelper.areEquals(this.password, that.getPassword())){
+				return false;
+			}
+			else if(!this.enabled == that.getEnabled()) {
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
 	
+	@Override
+	public int hashCode() {
+		int salt = 43;
+		int hashCodeRoot = super.hashCode();
+		hashCodeRoot += this.username == null ? 0 : this.username.hashCode();
+		hashCodeRoot += this.password == null ? 0 : this.password.hashCode();
+		hashCodeRoot += this.enabled ? 1 : 0;
+		return 37 * salt + hashCodeRoot;
+	}
 }

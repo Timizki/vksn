@@ -9,6 +9,7 @@ public class TestQuery extends Query {
 	private Entity entity;
 	private String name = "/";
 	private String freeText;
+	private Boolean isBoolean;
 	
 	@Match(mode = "EXACT")
 	public String getName() {
@@ -30,5 +31,13 @@ public class TestQuery extends Query {
 	
 	public void setFreeText(String freeText) {
 		this.freeText = freeText;
+	}
+	
+	public void setIsBoolean(Boolean isBoolean) {
+		this.isBoolean = isBoolean;
+	}
+	
+	public Boolean getIsBoolean() {
+		return isBoolean;
 	}
 }

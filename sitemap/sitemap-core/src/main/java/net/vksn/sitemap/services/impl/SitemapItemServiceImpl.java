@@ -29,7 +29,19 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 	public SitemapItem getItemByPath(int id, String[] path)
 			throws EntityNotFoundException {
 		Sitemap sitemap = sitemapService.getSitemap(id);
-		return dao.getItemByPath(sitemap, path);
+		SitemapItem item = null;
+		try {
+			item = dao.getItemByPath(sitemap, path);
+		}
+		catch(EntityNotFoundException e) {
+			if( path.length == 0 || "index".equals(path[0])) {
+				item = sitemap.getSitemapItems().iterator().next();
+			}
+			else {
+				throw e;
+			}
+		}
+		return item;
 	}
 
 	@Transactional(readOnly = true)
@@ -40,6 +52,11 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 	@Transactional
 	public void storeSitemapItem(SitemapItem item) throws EntityNotFoundException{
 		dao.store(item);
+		if(item.getSitemap() != null) {
+			Sitemap sitemap = item.getSitemap();
+			sitemap.getSitemapItems().add(item);
+			sitemapService.storeSitemap(sitemap);
+		}
 	}
 
 	@Transactional

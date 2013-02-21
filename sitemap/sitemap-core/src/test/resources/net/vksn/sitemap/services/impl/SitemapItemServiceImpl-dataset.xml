@@ -1,28 +1,39 @@
 <dataset>
 	<sitemap
-		ID="1"
-		NAME="/"
-		DEFAULT_SITEMAP="TRUE"
+		id="1"
+		name="/"
+		default_sitemap="true"
 	/>
 	<sitemap_item
-		ID="1"
-		NAME="parent"
-		PARENT_ID="[NULL]"
+		id="1"
+		name="parent"
+		parent_id="[NULL]"
 		sitemap_id="1"
+		page_position="0"
+		
 	/>	
 	<sitemap_item
-		ID="2"
-		NAME="document"
-		PARENT_ID="1"
+		id="4"
+		name="Ajankohtaista"
+		parent_id="[NULL]"
 		sitemap_id="1"
-	/>
+		page_position="1"
+		
+	/>	
 	<sitemap_item
-		ID="3" 
-		NAME="child"
-		PARENT_ID="2"
-		SITEMAP_ID="1"
-	/>
-	
-	
-	
+		id="3"
+		name="Yhteystiedot"
+		parent_id="[NULL]"
+		sitemap_id="1"
+		page_position="2"
+		
+	/>	
+	<sitemap_item
+		id="2"
+		name="document"
+		parent_id="1"
+		sitemap_id="[NULL]"
+		page_position="0"
+	/>	
+
 </dataset>

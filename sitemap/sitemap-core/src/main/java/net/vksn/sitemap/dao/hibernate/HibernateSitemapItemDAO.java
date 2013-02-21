@@ -1,6 +1,6 @@
 package net.vksn.sitemap.dao.hibernate;
 
-import java.util.Collection;
+import java.util.Arrays;
 import java.util.List;
 
 import net.vksn.bedrock.dao.hibernate.AbstractHibernateDAO;
@@ -27,19 +27,41 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 		
 		Criteria criteria = createCriteria();
 		criteria.add(Restrictions.eq("sitemap", sitemap));		
-		criteria.add(Restrictions.eq("name", path[path.length - 1]));
-		Criteria alias = criteria;
-		if(path.length > 1) {
-			for(int i = path.length -2; i == 0; i--) {
-				alias = alias.createCriteria("parent", Criteria.LEFT_JOIN);			
-				alias.add(Restrictions.conjunction().add(Restrictions.eq("name", path[i])));
-			}
+		
+		SitemapItem item = null;
+		List<String> pathAsList = Arrays.asList(path);
+
+		for(String slice : pathAsList) {
+				item = getItemByName(sitemap, item, slice);
 		}
-		Collection<SitemapItem> items = criteria.list();
+		if(item == null) {
+			throw new EntityNotFoundException(SitemapItem.class, path);
+		}
+		return item;
+	}
+	
+
+	@Transactional(readOnly = true)
+	public SitemapItem getItemByName(Sitemap sitemap, SitemapItem parent, String name)
+			throws EntityNotFoundException {
+		System.out.println(name);
+		Criteria criteria = createCriteria();
+		if(sitemap != null && parent == null) {
+			criteria.add(Restrictions.eq("sitemap", sitemap));		
+		}
+		criteria.add(Restrictions.eq("name", name));
+		if(parent != null) {
+			criteria.add(Restrictions.eq("parent", parent));
+		}
+		else {
+			criteria.add(Restrictions.isNull("parent"));
+		}
+		@SuppressWarnings("unchecked")
+		List<SitemapItem> items = criteria.list();
 		if(items.isEmpty()) {
-			throw new EntityNotFoundException(SitemapItem.class, path[path.length -1]);
+			throw new EntityNotFoundException(SitemapItem.class, "Name: " + name + " parent: " + parent);
 		}
-		return (SitemapItem)items.iterator().next();
+		return items.iterator().next();
 	}
 	
 	@Transactional(readOnly = true)

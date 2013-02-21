@@ -28,6 +28,9 @@ public class HibernateSitemapDAO extends AbstractHibernateDAO<Sitemap> implement
 		SitemapQuery query = new SitemapQuery();
 		query.setDefaultSitemap(true);
 		Collection<Sitemap> sitemaps = super.getByQuery(query);
+		if(sitemaps == null || sitemaps.isEmpty()){
+			throw new RuntimeException(new EntityNotFoundException(Sitemap.class, "DEFAULT_SITEMAP"));
+		}
 		return sitemaps.iterator().next();
 	}
 	
