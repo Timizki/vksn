@@ -2,6 +2,7 @@ package net.vksn.sitemap.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,9 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 	@OneToMany(mappedBy="parent")
 	@OrderBy("pagePosition")
 	public Set<SitemapItem> getChildrens() {
+		if(this.childrens == null) {
+			this.childrens = new HashSet<SitemapItem>();
+		}
 		return childrens;
 	}
 	public void setChildrens(Set<SitemapItem> childrens) {
@@ -80,7 +84,7 @@ public class SitemapItem extends net.vksn.bedrock.model.Entity {
 		this.decorationName = decorationName;
 	}
 	
-	@ElementCollection( fetch=FetchType.EAGER )
+	@ElementCollection(fetch=FetchType.EAGER)
 	@MapKeyColumn(name="name")
 	@Column(name="value")
 	public Map<String, String> getProperties() {

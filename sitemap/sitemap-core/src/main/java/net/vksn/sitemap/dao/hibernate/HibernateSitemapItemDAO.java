@@ -1,7 +1,9 @@
 package net.vksn.sitemap.dao.hibernate;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.vksn.bedrock.dao.hibernate.AbstractHibernateDAO;
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
@@ -69,5 +71,19 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 		SitemapItemQuery q = new SitemapItemQuery();
 		q.setSitemapId(sitemapId);
 		return (List<SitemapItem>) super.getByQuery(q);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	@Transactional(readOnly = true)
+	public Set<SitemapItem> getSiblings(SitemapItem item) {
+		Criteria criteria = createCriteria();
+		if(item.getParent() == null) {
+			criteria.add(Restrictions.eq("sitemap", item.getSitemap()));
+		}
+		else {
+			criteria.add(Restrictions.eq("parent", item.getParent()));
+		}
+		return new HashSet(criteria.list());
 	}
 }

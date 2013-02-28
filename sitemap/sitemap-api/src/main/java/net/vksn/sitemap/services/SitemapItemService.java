@@ -1,6 +1,7 @@
 package net.vksn.sitemap.services;
 
 import java.util.List;
+import java.util.Set;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
 import net.vksn.sitemap.model.SitemapItem;
@@ -20,5 +21,7 @@ public interface SitemapItemService {
 	void undeleteSitemapItem(int id)throws EntityNotFoundException;
 	
 	void removeSitemapItem(int id)throws EntityNotFoundException;
+	
+	Set<SitemapItem> getSiblings(SitemapItem item);
 	
 }

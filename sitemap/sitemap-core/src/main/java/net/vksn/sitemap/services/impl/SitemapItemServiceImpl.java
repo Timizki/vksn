@@ -1,5 +1,6 @@
 package net.vksn.sitemap.services.impl;
 import java.util.List;
+import java.util.Set;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
 import net.vksn.sitemap.dao.SitemapItemDAO;
@@ -71,6 +72,11 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 
 	public void removeSitemapItem(int id) throws EntityNotFoundException {
 		dao.remove(id);
+	}
+
+	@Transactional(readOnly = true)
+	public Set<SitemapItem> getSiblings(SitemapItem item) {
+		return dao.getSiblings(item);
 	}
 
 }

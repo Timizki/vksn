@@ -42,7 +42,7 @@ public class Sitemap extends net.vksn.bedrock.model.Entity {
 	public boolean isDefaultSitemap() {
 		return defaultSitemap;  	
 	}
-	//TODO: parametri booleaniksi ja selvitä miksi siihen syötetään Null
+
 	public void setDefaultSitemap(boolean isDefault) {
 		this.defaultSitemap = isDefault;
 		
