@@ -33,7 +33,7 @@ public abstract class AbstractGenericService<T extends Entity> implements Generi
 	@Transactional(readOnly = true)
 	@Override
 	public T get(int id) throws EntityNotFoundException {
-		return this.dao.get(id);
+		return this.dao.get(id, null);
 	}
 	
 	@Transactional

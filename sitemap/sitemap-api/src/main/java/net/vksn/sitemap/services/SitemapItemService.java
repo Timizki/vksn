@@ -11,7 +11,7 @@ public interface SitemapItemService {
 	SitemapItem getItem(int id) throws EntityNotFoundException;
 	
 	SitemapItem getItemByPath(int sitemapId, String[] path) throws EntityNotFoundException;
-	
+		
 	List<SitemapItem> getAllSitemapItems(int sitemapId);
 	
 	void storeSitemapItem(SitemapItem item) throws EntityNotFoundException;

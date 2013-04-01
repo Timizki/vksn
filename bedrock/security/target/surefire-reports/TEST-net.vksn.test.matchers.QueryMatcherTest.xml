@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.011" errors="0" skipped="0" tests="9" name="net.vksn.test.matchers.QueryMatcherTest">
+<testsuite failures="0" time="0.007" errors="0" skipped="0" tests="9" name="net.vksn.test.matchers.QueryMatcherTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/java-6-oracle/jre/lib/amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.os.patch.level" value="unknown"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
     <property name="user.dir" value="/home/timii/workspace/vksn/bedrock"/>
-    <property name="java.runtime.version" value="1.6.0_39-b04"/>
+    <property name="java.runtime.version" value="1.6.0_43-b01"/>
     <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment"/>
     <property name="java.endorsed.dirs" value="/usr/lib/jvm/java-6-oracle/jre/lib/endorsed"/>
     <property name="os.arch" value="amd64"/>
@@ -24,14 +24,13 @@
 "/>
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="os.name" value="Linux"/>
-    <property name="net.sourceforge.cobertura.datafile" value="/home/timii/workspace/vksn/bedrock/security/target/cobertura/cobertura.ser"/>
     <property name="classworlds.conf" value="/usr/share/maven/bin/m2.conf"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
     <property name="java.library.path" value="/usr/lib/jvm/java-6-oracle/jre/lib/amd64/server:/usr/lib/jvm/java-6-oracle/jre/lib/amd64:/usr/lib/jvm/java-6-oracle/jre/../lib/amd64:/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
     <property name="java.class.version" value="50.0"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="3.2.0-25-generic"/>
+    <property name="os.version" value="3.2.0-38-generic"/>
     <property name="user.home" value="/home/timii"/>
     <property name="user.timezone" value="Europe/Helsinki"/>
     <property name="java.awt.printerjob" value="sun.print.PSPrinterJob"/>
@@ -42,11 +41,11 @@
     <property name="java.vm.specification.version" value="1.0"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.home" value="/usr/lib/jvm/java-6-oracle/jre"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install site"/>
+    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher clean install"/>
     <property name="java.specification.vendor" value="Sun Microsystems Inc."/>
     <property name="user.language" value="en"/>
     <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="1.6.0_39"/>
+    <property name="java.version" value="1.6.0_43"/>
     <property name="java.ext.dirs" value="/usr/lib/jvm/java-6-oracle/jre/lib/ext:/usr/java/packages/lib/ext"/>
     <property name="securerandom.source" value="file:/dev/./urandom"/>
     <property name="sun.boot.class.path" value="/usr/lib/jvm/java-6-oracle/jre/lib/resources.jar:/usr/lib/jvm/java-6-oracle/jre/lib/rt.jar:/usr/lib/jvm/java-6-oracle/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-6-oracle/jre/lib/jsse.jar:/usr/lib/jvm/java-6-oracle/jre/lib/jce.jar:/usr/lib/jvm/java-6-oracle/jre/lib/charsets.jar:/usr/lib/jvm/java-6-oracle/jre/lib/modules/jdk.boot.jar:/usr/lib/jvm/java-6-oracle/jre/classes"/>
@@ -56,16 +55,15 @@
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
-    <property name="project.build.outputDirectory" value="/home/timii/workspace/vksn/bedrock/security/target/generated-classes/cobertura"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
   <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_nullClass"/>
-  <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testAppendToBuffer_attributeNotFound"/>
-  <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_valueNotMatch"/>
+  <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testAppendToBuffer_attributeNotFound"/>
+  <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_valueNotMatch"/>
   <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_happycase"/>
-  <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_nullExpectedValue"/>
-  <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_AttributeNotFound"/>
+  <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_nullExpectedValue"/>
+  <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_AttributeNotFound"/>
   <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testAppendToBuffer_valueNotMatch"/>
-  <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_ClassNotMatch"/>
+  <testcase time="0.001" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_ClassNotMatch"/>
   <testcase time="0" classname="net.vksn.test.matchers.QueryMatcherTest" name="testQueryEq_nullAttributeName"/>
 </testsuite>

@@ -10,10 +10,11 @@ import net.vksn.sitemap.services.SitemapItemService;
 import net.vksn.sitemap.services.SitemapService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
+@Transactional
 public class SitemapItemServiceImpl implements SitemapItemService {
 
 	@Autowired
@@ -23,13 +24,13 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 	private SitemapService sitemapService;
 	
 	public SitemapItem getItem(int id) throws EntityNotFoundException {	
-		return dao.get(id);
+		return dao.get(id, null);
 	}
 
 	@Transactional(readOnly = true)
 	public SitemapItem getItemByPath(int id, String[] path)
 			throws EntityNotFoundException {
-		Sitemap sitemap = sitemapService.getSitemap(id);
+		Sitemap sitemap = sitemapService.getSitemap(id, true);
 		SitemapItem item = null;
 		try {
 			item = dao.getItemByPath(sitemap, path);
@@ -53,11 +54,6 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 	@Transactional
 	public void storeSitemapItem(SitemapItem item) throws EntityNotFoundException{
 		dao.store(item);
-		if(item.getSitemap() != null) {
-			Sitemap sitemap = item.getSitemap();
-			sitemap.getSitemapItems().add(item);
-			sitemapService.storeSitemap(sitemap);
-		}
 	}
 
 	@Transactional

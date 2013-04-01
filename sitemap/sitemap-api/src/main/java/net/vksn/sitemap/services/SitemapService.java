@@ -13,7 +13,7 @@ public interface SitemapService {
 	
 	Collection<Sitemap> getAllSitemaps();
 	
-	Sitemap getSitemap(int id) throws EntityNotFoundException;
+	Sitemap getSitemap(int id, boolean lazy) throws EntityNotFoundException;
 	
 	Sitemap getSitemapByName(String name) throws EntityNotFoundException;
 		 

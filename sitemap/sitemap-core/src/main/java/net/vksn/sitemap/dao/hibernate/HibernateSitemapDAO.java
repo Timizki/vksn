@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class HibernateSitemapDAO extends AbstractHibernateDAO<Sitemap> implements SitemapDAO {
 
 	public HibernateSitemapDAO() {

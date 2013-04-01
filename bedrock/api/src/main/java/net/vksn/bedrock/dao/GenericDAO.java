@@ -1,13 +1,14 @@
 package net.vksn.bedrock.dao;
 
 import java.util.Collection;
+import java.util.Map;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
 import net.vksn.bedrock.model.Entity;
 import net.vksn.bedrock.query.Query;
 
 public interface GenericDAO<T extends Entity> {
-	T get(int id) throws EntityNotFoundException;
+	T get(int id, Map<String, FetchModeEnum> fetchModes) throws EntityNotFoundException;
 
 	Collection<T> getByQuery(Query query);
 

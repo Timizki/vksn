@@ -1,17 +1,21 @@
 package net.vksn.sitemap.services.impl;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
+import net.vksn.bedrock.dao.FetchModeEnum;
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
 import net.vksn.sitemap.dao.SitemapDAO;
 import net.vksn.sitemap.model.Sitemap;
 import net.vksn.sitemap.services.SitemapService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
+@Transactional
 public class SitemapServiceImpl implements SitemapService {
 
 	@Autowired
@@ -23,8 +27,14 @@ public class SitemapServiceImpl implements SitemapService {
 	}
 
 	@Transactional(readOnly = true)
-	public Sitemap getSitemap(int id) throws EntityNotFoundException {
-		return dao.get(id);
+	public Sitemap getSitemap(int id, boolean lazy) throws EntityNotFoundException {
+		if(lazy) {
+			return dao.get(id, null);
+		}
+		Map<String, FetchModeEnum>	fetchModes = new HashMap<String, FetchModeEnum>();
+		fetchModes.put("sitemapItems", FetchModeEnum.JOIN);
+		fetchModes.put("sitemapItems.childrens", FetchModeEnum.JOIN);
+		return dao.get(id, fetchModes);
 	}
 	
 	@Transactional(readOnly = true)
@@ -61,5 +71,4 @@ public class SitemapServiceImpl implements SitemapService {
 	public Sitemap getDefaultSitemap() {
 		return dao.getDefaultSitemap();
 	}
-
 }

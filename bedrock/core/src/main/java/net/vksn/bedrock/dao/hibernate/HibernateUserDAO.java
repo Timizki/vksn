@@ -31,7 +31,7 @@ public class HibernateUserDAO extends AbstractHibernateDAO<User> implements User
 
 	@Transactional(readOnly = true)
 	public User getUser(int id) throws EntityNotFoundException {
-		return super.get(id);
+		return super.get(id, null);
 	}
 
 	@Transactional(readOnly = true)

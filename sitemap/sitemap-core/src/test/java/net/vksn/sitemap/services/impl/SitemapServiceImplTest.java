@@ -4,9 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
+import java.util.Set;
 
 import net.vksn.bedrock.exceptions.EntityNotFoundException;
 import net.vksn.sitemap.model.Sitemap;
+import net.vksn.sitemap.model.SitemapItem;
 import net.vksn.sitemap.services.SitemapService;
 import net.vksn.test.AbstractDatabaseTestCase;
 
@@ -65,9 +67,18 @@ public class SitemapServiceImplTest extends AbstractDatabaseTestCase {
 
 	@Test
 	public void testGetSitemap_ById() throws Exception {
-		Sitemap sitemap = service.getSitemap(1);
+		Sitemap sitemap = service.getSitemap(1, true);
 		Assert.assertTrue( sitemap.getId() == 1);
 	}
+	
+	@Test
+	public void testGetNotLazySitemap_ById() throws Exception {
+		Sitemap sitemap = service.getSitemap(1, false);
+		Set<SitemapItem> items = sitemap.getSitemapItems();
+		items.iterator().next();
+		Assert.assertTrue( sitemap.getId() == 1);
+	}
+	
 	@Override
 	protected IDatabaseConnection getConnection() throws SQLException {
 		try {

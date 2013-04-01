@@ -2,7 +2,6 @@ package net.vksn.bedrock.dao.util.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.awt.Robot;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

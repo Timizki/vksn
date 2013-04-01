@@ -12,11 +12,14 @@ import net.vksn.sitemap.model.Sitemap;
 import net.vksn.sitemap.model.SitemapItem;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
+@Transactional
 public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> implements SitemapItemDAO {
 
 	public HibernateSitemapItemDAO() {
@@ -26,9 +29,6 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 	@Transactional(readOnly = true)
 	public SitemapItem getItemByPath(Sitemap sitemap, String[] path)
 			throws EntityNotFoundException {
-		
-		Criteria criteria = createCriteria();
-		criteria.add(Restrictions.eq("sitemap", sitemap));		
 		
 		SitemapItem item = null;
 		List<String> pathAsList = Arrays.asList(path);
@@ -46,31 +46,33 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 	@Transactional(readOnly = true)
 	public SitemapItem getItemByName(Sitemap sitemap, SitemapItem parent, String name)
 			throws EntityNotFoundException {
-		System.out.println(name);
 		Criteria criteria = createCriteria();
+		criteria.setFetchMode("childrens", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("name", name));
 		if(sitemap != null && parent == null) {
 			criteria.add(Restrictions.eq("sitemap", sitemap));		
 		}
-		criteria.add(Restrictions.eq("name", name));
 		if(parent != null) {
 			criteria.add(Restrictions.eq("parent", parent));
 		}
 		else {
 			criteria.add(Restrictions.isNull("parent"));
 		}
-		@SuppressWarnings("unchecked")
-		List<SitemapItem> items = criteria.list();
-		if(items.isEmpty()) {
+		
+		SitemapItem item = (SitemapItem) criteria.uniqueResult();
+		if(item == null) {
 			throw new EntityNotFoundException(SitemapItem.class, "Name: " + name + " parent: " + parent);
 		}
-		return items.iterator().next();
+		return item;
 	}
 	
 	@Transactional(readOnly = true)
 	public List<SitemapItem> getAllSitemapItems(int sitemapId) {
-		SitemapItemQuery q = new SitemapItemQuery();
-		q.setSitemapId(sitemapId);
-		return (List<SitemapItem>) super.getByQuery(q);
+		Criteria criteria = createCriteria();
+		Sitemap sitemap = new Sitemap();
+		sitemap.setId(sitemapId);
+		criteria.add(Restrictions.eq("sitemap", sitemap));
+		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,6 +80,7 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 	@Transactional(readOnly = true)
 	public Set<SitemapItem> getSiblings(SitemapItem item) {
 		Criteria criteria = createCriteria();
+		criteria.addOrder(Order.asc("pagePosition"));
 		if(item.getParent() == null) {
 			criteria.add(Restrictions.eq("sitemap", item.getSitemap()));
 		}

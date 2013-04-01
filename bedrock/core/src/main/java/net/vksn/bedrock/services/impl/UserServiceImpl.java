@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User get(int id) throws EntityNotFoundException {
-		return userDAO.get(id);
+		return userDAO.get(id, null);
 	}
 
 	@Override
