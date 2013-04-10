@@ -52,7 +52,7 @@ public class SitemapItemServiceImpl implements SitemapItemService {
 	}
 	
 	@Transactional
-	public void storeSitemapItem(SitemapItem item) throws EntityNotFoundException{
+	public void storeSitemapItem(SitemapItem item) throws EntityNotFoundException {
 		dao.store(item);
 	}
 

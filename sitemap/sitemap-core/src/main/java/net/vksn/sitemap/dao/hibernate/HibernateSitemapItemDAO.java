@@ -66,6 +66,7 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 		return item;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true)
 	public List<SitemapItem> getAllSitemapItems(int sitemapId) {
 		Criteria criteria = createCriteria();
@@ -87,6 +88,6 @@ public class HibernateSitemapItemDAO extends AbstractHibernateDAO<SitemapItem> i
 		else {
 			criteria.add(Restrictions.eq("parent", item.getParent()));
 		}
-		return new HashSet(criteria.list());
+		return new HashSet<SitemapItem>(criteria.list());
 	}
 }
